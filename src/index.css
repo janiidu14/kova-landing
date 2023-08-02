@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
+
+
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: rgb(9, 25, 42);
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+
+
+/* Default width for smaller screens */
+#landing-images img {
+  max-width: 50%;
+}
+
+/* Adjust width for larger screens */
+@media (min-width: 768px) {
+  #landing-images img {
+    max-width: 80%; /* Adjust the width percentage as needed */
+  }
+}
+
+/* Adjust width for even larger screens */
+@media (min-width: 1200px) {
+  #landing-images img {
+    max-width: 100%; /* Adjust the width percentage as needed */
+  }
+}
+
+
