@@ -31,59 +31,45 @@ const Contact = ({ status, onValidate }) => {
   };
 
   // Handling form submit
-  const handleSubmit = (e) => {
-    //  Stops the page from refreshing when the form submits and thereby preserving the state.
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     let isValidForm = handleValidation();
     console.log(isValidForm);
-
+  
     if (isValidForm) {
-      setButtonText("Sending");
-      onValidate({
-        EMAIL: email,
-
-      });
-
-      if (status !== "success") {
+      setButtonText("Joining");
+  
+      // Assuming that onValidate is an asynchronous function that returns a promise
+      try {
+        await onValidate({ EMAIL: email });
+  
+        // Update the success and failure messages based on the updated status prop
+        if (status !== "success") {
+          setShowSuccessMessage(false);
+          setShowFailureMessage(true);
+          setButtonText("Join the Waitlist");
+          toast.error("Error in Entered Email.", { /* ...toast config */ });
+        } else {
+          setShowSuccessMessage(true);
+          setShowFailureMessage(false);
+          setButtonText("Join the Waitlist");
+          toast.success("Thank you! You have been Registered.", { /* ...toast config */ });
+  
+          setEmail("");
+          // Set showSuccessMessage to true, not an empty string
+          setShowSuccessMessage(true);
+        }
+      } catch (error) {
+        console.error("Error in onValidate:", error);
         setShowSuccessMessage(false);
         setShowFailureMessage(true);
         setButtonText("Join the waitlist");
-        toast.error("Message sending failed.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-        return;
-      } else {
-        setShowSuccessMessage(true);
-        setShowFailureMessage(false);
-        setButtonText("Send Message");
-        toast.success("Thank you! Your Message has been delivered.", {
-          position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-        });
-
-
-        setEmail("");
-
-        setShowSuccessMessage("");
-        return;
+        toast.error("Error in Registering.", { /* ...toast config */ });
       }
     }
   };
-
+  
   return (
     <div className="container bg-[#201A26] m-0">
         <div className="pl-10 lg:pl-14 shadow-none bg-[#201A26] ">
@@ -91,7 +77,7 @@ const Contact = ({ status, onValidate }) => {
           <h2 className="mt-16 md:mt-28 text-slate-100 text-20px">
             Learn at your behest
           </h2>
-          <h2 className="text-64px md:mt-4 -mt-5 -mb-8 md:mb-0 font-bold text-slate-100 dark:text-teal-400">
+          <h2 className="text-64px -mt-5 -mb-8  font-bold text-slate-100 dark:text-teal-400">
             Learn from
           </h2>
           <h2 className="text-64px p-0 mb-20  font-bold bg-gradient-to-l from-purple-900 to-pink-500 text-transparent bg-clip-text dark:text-teal-400 inline-block">
